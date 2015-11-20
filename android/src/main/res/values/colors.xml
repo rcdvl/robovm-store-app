@@ -1,9 +1,21 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <resources>
-	<color name="robo_purple">#B455B6</color>
-	<color name="robo_blue">#00AEEF</color>
-	<color name="robo_dark_blue">#2C3E50</color>
-	<color name="robo_green">#93C624</color>
-	<color name="robo_gray">#444444</color>
-	<color name="robo_light_gray">#666666</color>
+    <color name="robo_purple">#B455B6</color>
+    <color name="robo_blue">#00AEEF</color>
+    <color name="robo_dark_blue">#2C3E50</color>
+    <color name="robo_green">#93C624</color>
+    <color name="robo_gray">#444444</color>
+    <color name="robo_light_gray">#666666</color>
+
+
+    <color name="main_background">#eeeeee</color>
+    <color name="action_bar_title_color">@android:color/white</color>
+    <color name="primary">@color/robo_green</color>
+    <color name="primary_dark">#47A035</color>
+    <color name="accent">#11B4D3</color>
+    <color name="ab_bottom_shadow_1">#30000000</color>
+    <color name="ab_bottom_shadow_2">#20000000</color>
+
+    <color name="btn_bg_color">@color/robo_green</color>
+    <color name="btn_bg_shadow_color">@color/primary_dark</color>
 </resources>

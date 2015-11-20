@@ -17,20 +17,40 @@
 package org.robovm.store.fragments;
 
 import android.animation.Animator;
-import android.animation.AnimatorInflater;
 import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
 import android.app.Activity;
-import android.app.Fragment;
 import android.graphics.Bitmap;
 import android.graphics.Matrix;
 import android.os.Bundle;
-import android.view.*;
-import android.widget.*;
+import android.support.v4.app.Fragment;
+import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
+import android.view.View;
+import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.Spinner;
+import android.widget.TextView;
+
 import org.robovm.store.R;
 import org.robovm.store.api.RoboVMWebService;
-import org.robovm.store.model.*;
-import org.robovm.store.util.*;
+import org.robovm.store.model.Basket;
+import org.robovm.store.model.Order;
+import org.robovm.store.model.Product;
+import org.robovm.store.model.ProductColor;
+import org.robovm.store.model.ProductSize;
+import org.robovm.store.util.Action;
+import org.robovm.store.util.Colors;
+import org.robovm.store.util.ImageCache;
+import org.robovm.store.util.Images;
+import org.robovm.store.util.MatrixEvaluator;
 import org.robovm.store.views.BadgeDrawable;
 import org.robovm.store.views.KenBurnsDrawable;
 import org.robovm.store.views.SlidingLayout;
@@ -64,7 +84,8 @@ public class ProductDetailsFragment extends Fragment implements ViewTreeObserver
     private ValueAnimator kenBurnsMovement;
     private ValueAnimator kenBurnsAlpha;
 
-    public ProductDetailsFragment() {}
+    public ProductDetailsFragment() {
+    }
 
     public ProductDetailsFragment(Product product, int slidingDelta) {
         this.currentProduct = product;
@@ -159,11 +180,11 @@ public class ProductDetailsFragment extends Fragment implements ViewTreeObserver
     }
 
     @Override
-    public Animator onCreateAnimator(int transit, boolean enter, int nextAnim) {
+    public Animation onCreateAnimation(int transit, boolean enter, int nextAnim) {
         if (!enter && shouldAnimatePop) {
-            return AnimatorInflater.loadAnimator(getView().getContext(), R.anim.add_to_basket_in);
+            return AnimationUtils.loadAnimation(getView().getContext(), R.anim.add_to_basket_in);
         }
-        return super.onCreateAnimator(transit, enter, nextAnim);
+        return super.onCreateAnimation(transit, enter, nextAnim);
     }
 
     private void animateImages() {
@@ -269,32 +290,32 @@ public class ProductDetailsFragment extends Fragment implements ViewTreeObserver
                         float rotation = random.nextInt(9) / 100f;
 
                         switch (random.nextInt(3)) {
-                        case 0:
-                            zoomInX = 1.25f;
-                            zoomInY = 1.25f;
-                            moveX = -maxMoveX;
-                            moveY = -maxMoveY;
-                            break;
-                        case 1:
-                            zoomInX = 1.1f;
-                            zoomInY = 1.1f;
-                            moveX = -maxMoveX;
-                            moveY = maxMoveY;
-                            originY = -moveY * zoomInY * 1.1f;
-                            break;
-                        case 2:
-                            zoomInX = 1.2f;
-                            zoomInY = 1.2f;
-                            moveX = 0;
-                            moveY = -maxMoveY;
-                            break;
-                        default:
-                            zoomInX = 1.2f;
-                            zoomInY = 1.2f;
-                            moveX = 0;
-                            moveY = maxMoveY;
-                            originY = -moveY * zoomInY * 1.1f;
-                            break;
+                            case 0:
+                                zoomInX = 1.25f;
+                                zoomInY = 1.25f;
+                                moveX = -maxMoveX;
+                                moveY = -maxMoveY;
+                                break;
+                            case 1:
+                                zoomInX = 1.1f;
+                                zoomInY = 1.1f;
+                                moveX = -maxMoveX;
+                                moveY = maxMoveY;
+                                originY = -moveY * zoomInY * 1.1f;
+                                break;
+                            case 2:
+                                zoomInX = 1.2f;
+                                zoomInY = 1.2f;
+                                moveX = 0;
+                                moveY = -maxMoveY;
+                                break;
+                            default:
+                                zoomInX = 1.2f;
+                                zoomInY = 1.2f;
+                                moveX = 0;
+                                moveY = maxMoveY;
+                                originY = -moveY * zoomInY * 1.1f;
+                                break;
                         }
 
                         MatrixEvaluator evaluator = new MatrixEvaluator();
@@ -324,13 +345,16 @@ public class ProductDetailsFragment extends Fragment implements ViewTreeObserver
                         kenBurnsAlpha.setRepeatCount(ValueAnimator.INFINITE);
                         kenBurnsAlpha.addListener(new Animator.AnimatorListener() {
                             @Override
-                            public void onAnimationStart(Animator animation) {}
+                            public void onAnimationStart(Animator animation) {
+                            }
 
                             @Override
-                            public void onAnimationEnd(Animator animation) {}
+                            public void onAnimationEnd(Animator animation) {
+                            }
 
                             @Override
-                            public void onAnimationCancel(Animator animation) {}
+                            public void onAnimationCancel(Animator animation) {
+                            }
 
                             @Override
                             public void onAnimationRepeat(Animator animation) {
@@ -360,7 +384,8 @@ public class ProductDetailsFragment extends Fragment implements ViewTreeObserver
         }
         int next = currentIndex + 1;
         String image = images.get(next);
-        ImageCache.getInstance().downloadImage(image, (f) -> {});
+        ImageCache.getInstance().downloadImage(image, (f) -> {
+        });
     }
 
     public void setAddToBasketListener(Action<Order> listener) {

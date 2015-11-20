@@ -16,13 +16,18 @@
 
 package org.robovm.store.fragments;
 
-import android.app.ListFragment;
 import android.content.Context;
 import android.os.Bundle;
+import android.support.v4.app.ListFragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.*;
+import android.widget.BaseAdapter;
+import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.ListView;
+import android.widget.TextView;
+
 import org.robovm.store.R;
 import org.robovm.store.api.RoboVMWebService;
 import org.robovm.store.model.Basket;
@@ -37,7 +42,8 @@ public class BasketFragment extends ListFragment {
 
     private Runnable checkoutListener;
 
-    public BasketFragment() {}
+    public BasketFragment() {
+    }
 
     public BasketFragment(Basket basket) {
         this.basket = basket;

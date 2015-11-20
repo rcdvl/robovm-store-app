@@ -1,7 +1,8 @@
 {
 	"libGDXVersion": "1.7.0",
 	"roboVMVersion": "1.9.0",
-	"androidGradleToolsVersion": "1.2.3",
-	"androidBuildToolsVersion": "23.0.1",
-	"androidSDKVersion": "23"
+	"androidGradleToolsVersion": "1.3.1",
+	"androidBuildToolsVersion": "23.0.2",
+	"androidSDKVersion": "23",
+	"androidSupportLibVersion": "23.1.1"
 }

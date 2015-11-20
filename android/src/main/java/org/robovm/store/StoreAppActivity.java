@@ -16,23 +16,31 @@
 
 package org.robovm.store;
 
-import android.app.Activity;
-import android.app.Fragment;
-import android.app.FragmentManager;
-import android.app.FragmentTransaction;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.util.DisplayMetrics;
 import android.view.MenuItem;
+
 import org.robovm.store.api.RoboVMWebService;
 import org.robovm.store.api.RoboVMWebService.ActionWrapper;
-import org.robovm.store.fragments.*;
+import org.robovm.store.fragments.BasketFragment;
+import org.robovm.store.fragments.BragFragment;
+import org.robovm.store.fragments.LoginFragment;
+import org.robovm.store.fragments.ProductDetailsFragment;
+import org.robovm.store.fragments.ProductListFragment;
+import org.robovm.store.fragments.ShippingDetailsFragment;
 import org.robovm.store.model.Product;
 import org.robovm.store.util.Action;
 import org.robovm.store.util.ImageCache;
 import org.robovm.store.util.Images;
 
-public class StoreAppActivity extends Activity {
+public class StoreAppActivity extends AppCompatActivity {
     private int baseFragment;
+    private Toolbar toolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,6 +60,8 @@ public class StoreAppActivity extends Activity {
         };
 
         setContentView(R.layout.main);
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
 
         // Retain fragments so don't set home if state is stored.
         if (getFragmentManager().getBackStackEntryCount() == 0) {
@@ -76,25 +86,25 @@ public class StoreAppActivity extends Activity {
     }
 
     @Override
-    public boolean onMenuItemSelected(int featureId, MenuItem item) {
+    public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-        case R.id.cart_menu_item:
-            showBasket();
-            return true;
-        case android.R.id.home:
-            // pop full backstack when going home.
-            getFragmentManager().popBackStack(baseFragment, FragmentManager.POP_BACK_STACK_INCLUSIVE);
-            setupActionBar();
-            return true;
+            case R.id.cart_menu_item:
+                showBasket();
+                return true;
+            case android.R.id.home:
+                // pop full backstack when going home.
+                getFragmentManager().popBackStack(baseFragment, FragmentManager.POP_BACK_STACK_INCLUSIVE);
+                setupActionBar();
+                return true;
         }
 
-        return super.onMenuItemSelected(featureId, item);
+        return super.onOptionsItemSelected(item);
     }
 
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        setupActionBar(getFragmentManager().getBackStackEntryCount() != 0);
+        setupActionBar(getSupportFragmentManager().getBackStackEntryCount() != 0);
     }
 
     public int switchScreens(Fragment fragment) {
@@ -102,7 +112,7 @@ public class StoreAppActivity extends Activity {
     }
 
     public int switchScreens(Fragment fragment, boolean animated, boolean isRoot) {
-        FragmentTransaction transaction = getFragmentManager().beginTransaction();
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
 
         if (animated) {
             transaction.setCustomAnimations(getInAnimationForFragment(fragment), getOutAnimationForFragment(fragment));
@@ -121,12 +131,12 @@ public class StoreAppActivity extends Activity {
         int animIn = R.anim.enter;
 
         switch (fragment.getClass().getSimpleName()) {
-        case "ProductDetailsFragment":
-            animIn = R.anim.product_detail_in;
-            break;
-        case "BasketFragment":
-            animIn = R.anim.basket_in;
-            break;
+            case "ProductDetailsFragment":
+                animIn = R.anim.product_detail_in;
+                break;
+            case "BasketFragment":
+                animIn = R.anim.basket_in;
+                break;
         }
         return animIn;
     }
@@ -135,11 +145,11 @@ public class StoreAppActivity extends Activity {
         int animOut = R.anim.exit;
 
         switch (fragment.getClass().getSimpleName()) {
-        case "ProductDetailsFragment":
-            animOut = R.anim.product_detail_out;
-            break;
-        case "BasketFragment":
-            break;
+            case "ProductDetailsFragment":
+                animOut = R.anim.product_detail_out;
+                break;
+            case "BasketFragment":
+                break;
         }
         return animOut;
     }
@@ -148,6 +158,7 @@ public class StoreAppActivity extends Activity {
         ProductDetailsFragment productDetails = new ProductDetailsFragment(product, itemVerticalOffset);
         productDetails.setAddToBasketListener((order) -> {
             RoboVMWebService.getInstance().getBasket().add(order);
+            onBackPressed();
             setupActionBar();
         });
         switchScreens(productDetails);
@@ -158,7 +169,8 @@ public class StoreAppActivity extends Activity {
     }
 
     public void setupActionBar(boolean showUp) {
-        getActionBar().setDisplayHomeAsUpEnabled(showUp);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(showUp);
+        toolbar.setNavigationOnClickListener(v -> onBackPressed());
     }
 
     public void showBasket() {

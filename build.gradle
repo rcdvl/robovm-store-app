@@ -10,6 +10,7 @@ buildscript {
         androidGradleToolsVersion = json.androidGradleToolsVersion
         androidBuildToolsVersion = json.androidBuildToolsVersion
         androidSDKVersion = Integer.parseInt(json.androidSDKVersion)
+        androidSupportLibVersion = json.androidSupportLibVersion
     }
 }
 

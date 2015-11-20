@@ -16,13 +16,19 @@
 
 package org.robovm.store.fragments;
 
-import android.app.Fragment;
 import android.app.ProgressDialog;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.*;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.Toast;
+
 import org.robovm.store.R;
 import org.robovm.store.api.RoboVMWebService;
 import org.robovm.store.api.ValidationError;
@@ -102,7 +108,8 @@ public class ShippingDetailsFragment extends Fragment {
             }
 
             @Override
-            public void onNothingSelected(AdapterView<?> parent) {}
+            public void onNothingSelected(AdapterView<?> parent) {
+            }
         });
 
         placeOrder.setOnClickListener((b) -> placeOrder());
@@ -131,8 +138,8 @@ public class ShippingDetailsFragment extends Fragment {
     }
 
     private void placeOrder() {
-        EditText[] entries = new EditText[] { phoneNumberField, address1Field, address2Field, cityField, stateField,
-                zipCodeField, countryField };
+        EditText[] entries = new EditText[]{phoneNumberField, address1Field, address2Field, cityField, stateField,
+                zipCodeField, countryField};
         for (EditText entry : entries) {
             entry.setEnabled(false);
         }
@@ -180,30 +187,30 @@ public class ShippingDetailsFragment extends Fragment {
                         alertMessage = message;
                     } else {
                         switch (field) {
-                        case "firstName":
-                            alertMessage = "First name is required";
-                            break;
-                        case "lastName":
-                            alertMessage = "Last name is required";
-                            break;
-                        case "address1":
-                            alertMessage = "Address is required";
-                            break;
-                        case "city":
-                            alertMessage = "City is required";
-                            break;
-                        case "zipCode":
-                            alertMessage = "ZIP code is required";
-                            break;
-                        case "phone":
-                            alertMessage = "Phone number is required";
-                            break;
-                        case "country":
-                            alertMessage = "Country is required";
-                            break;
-                        default:
-                            alertMessage = message;
-                            break;
+                            case "firstName":
+                                alertMessage = "First name is required";
+                                break;
+                            case "lastName":
+                                alertMessage = "Last name is required";
+                                break;
+                            case "address1":
+                                alertMessage = "Address is required";
+                                break;
+                            case "city":
+                                alertMessage = "City is required";
+                                break;
+                            case "zipCode":
+                                alertMessage = "ZIP code is required";
+                                break;
+                            case "phone":
+                                alertMessage = "Phone number is required";
+                                break;
+                            case "country":
+                                alertMessage = "Country is required";
+                                break;
+                            default:
+                                alertMessage = message;
+                                break;
                         }
                     }
                 }
