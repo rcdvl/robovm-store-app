@@ -16,29 +16,6 @@
 
 package org.robovm.store.fragments;
 
-import android.animation.Animator;
-import android.animation.ObjectAnimator;
-import android.animation.ValueAnimator;
-import android.app.Activity;
-import android.graphics.Bitmap;
-import android.graphics.Matrix;
-import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
-import android.view.View;
-import android.view.ViewGroup;
-import android.view.ViewTreeObserver;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
-import android.widget.ArrayAdapter;
-import android.widget.Button;
-import android.widget.ImageView;
-import android.widget.Spinner;
-import android.widget.TextView;
-
 import org.robovm.store.R;
 import org.robovm.store.api.RoboVMWebService;
 import org.robovm.store.model.Basket;
@@ -55,12 +32,37 @@ import org.robovm.store.views.BadgeDrawable;
 import org.robovm.store.views.KenBurnsDrawable;
 import org.robovm.store.views.SlidingLayout;
 
+import android.animation.Animator;
+import android.animation.ObjectAnimator;
+import android.animation.ValueAnimator;
+import android.app.Activity;
+import android.graphics.Bitmap;
+import android.graphics.Matrix;
+import android.os.Bundle;
+import android.support.design.widget.Snackbar;
+import android.support.v4.app.Fragment;
+import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
+import android.view.View;
+import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.Spinner;
+import android.widget.TextView;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 
-public class ProductDetailsFragment extends Fragment implements ViewTreeObserver.OnGlobalLayoutListener {
+public class ProductDetailsFragment extends Fragment implements ViewTreeObserver
+        .OnGlobalLayoutListener {
     private static final float ENLARGE_RATIO = 1.1f;
 
     private Action<Order> addToBasketListener;
@@ -79,6 +81,7 @@ public class ProductDetailsFragment extends Fragment implements ViewTreeObserver
     private int slidingDelta;
     private Spinner sizeSpinner;
     private Spinner colorSpinner;
+    private Spinner quantitySpinner;
 
     private KenBurnsDrawable productDrawable;
     private ValueAnimator kenBurnsMovement;
@@ -104,7 +107,8 @@ public class ProductDetailsFragment extends Fragment implements ViewTreeObserver
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+            Bundle savedInstanceState) {
         return inflater.inflate(R.layout.product_detail, null, true);
     }
 
@@ -112,26 +116,32 @@ public class ProductDetailsFragment extends Fragment implements ViewTreeObserver
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        productImage = (ImageView) view.findViewById(R.id.productImage);
-        sizeSpinner = (Spinner) view.findViewById(R.id.productSize);
-        colorSpinner = (Spinner) view.findViewById(R.id.productColor);
+        productImage = (ImageView)view.findViewById(R.id.productImage);
+        sizeSpinner = (Spinner)view.findViewById(R.id.productSize);
+        colorSpinner = (Spinner)view.findViewById(R.id.productColor);
+        quantitySpinner = (Spinner)view.findViewById(R.id.productQuantity);
 
-        Button addToBasket = (Button) view.findViewById(R.id.addToBasket);
+        Button addToBasket = (Button)view.findViewById(R.id.addToBasket);
         addToBasket.setOnClickListener((button) -> {
             order.setSize(currentProduct.getSizes().get(sizeSpinner.getSelectedItemPosition()));
             order.setColor(currentProduct.getColors().get(colorSpinner.getSelectedItemPosition()));
+            order.setQuantity((Integer)quantitySpinner.getSelectedItem());
             shouldAnimatePop = true;
+            Snackbar.make(getView(), order.getProduct() + " added to basket", Snackbar.LENGTH_LONG)
+                    .show();
             getActivity().getFragmentManager().popBackStack();
             if (addToBasketListener != null) {
                 addToBasketListener.invoke(new Order(order));
             }
         });
 
-        ((TextView) view.findViewById(R.id.productTitle)).setText(currentProduct.getName());
-        ((TextView) view.findViewById(R.id.productPrice)).setText(currentProduct.getPriceDescription());
-        ((TextView) view.findViewById(R.id.productDescription)).setText(currentProduct.getDescription());
+        ((TextView)view.findViewById(R.id.productTitle)).setText(currentProduct.getName());
+        ((TextView)view.findViewById(R.id.productPrice))
+                .setText(currentProduct.getPriceDescription());
+        ((TextView)view.findViewById(R.id.productDescription))
+                .setText(currentProduct.getDescription());
 
-        ((SlidingLayout) view).setInitialMainViewDelta(slidingDelta);
+        ((SlidingLayout)view).setInitialMainViewDelta(slidingDelta);
 
         loadOptions();
     }
@@ -148,6 +158,13 @@ public class ProductDetailsFragment extends Fragment implements ViewTreeObserver
         colorAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
         colorSpinner.setAdapter(colorAdapter);
+
+        Integer[] quantities = new Integer[]{1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
+        ArrayAdapter<Integer> quantityAdapter = new ArrayAdapter<Integer>(getContext(),
+                android.R.layout.simple_spinner_dropdown_item, quantities);
+        quantityAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
+        quantitySpinner.setAdapter(quantityAdapter);
     }
 
     @Override
@@ -239,19 +256,21 @@ public class ProductDetailsFragment extends Fragment implements ViewTreeObserver
                             if (imageHeight > frameHeight) {
                                 heightDiff = imageHeight - frameHeight;
 
-                                if (widthDiff > heightDiff)
+                                if (widthDiff > heightDiff) {
                                     resizeRatio = frameHeight / imageHeight;
-                                else
+                                } else {
                                     resizeRatio = frameWidth / imageWidth;
+                                }
 
                                 // No higher than screen [OK]
                             } else {
                                 heightDiff = frameHeight - imageHeight;
 
-                                if (widthDiff > heightDiff)
+                                if (widthDiff > heightDiff) {
                                     resizeRatio = frameWidth / imageWidth;
-                                else
+                                } else {
                                     resizeRatio = frameHeight / imageHeight;
+                                }
                             }
                             // No wider than screen
                         } else {
@@ -261,19 +280,21 @@ public class ProductDetailsFragment extends Fragment implements ViewTreeObserver
                             if (imageHeight > frameHeight) {
                                 heightDiff = imageHeight - frameHeight;
 
-                                if (widthDiff > heightDiff)
+                                if (widthDiff > heightDiff) {
                                     resizeRatio = imageHeight / frameHeight;
-                                else
+                                } else {
                                     resizeRatio = frameWidth / imageWidth;
+                                }
 
                                 // No higher than screen [OK]
                             } else {
                                 heightDiff = frameHeight - imageHeight;
 
-                                if (widthDiff > heightDiff)
+                                if (widthDiff > heightDiff) {
                                     resizeRatio = frameWidth / imageWidth;
-                                else
+                                } else {
                                     resizeRatio = frameHeight / imageHeight;
+                                }
                             }
                         }
 
@@ -321,25 +342,26 @@ public class ProductDetailsFragment extends Fragment implements ViewTreeObserver
                         MatrixEvaluator evaluator = new MatrixEvaluator();
                         Matrix startMatrix = new Matrix();
                         startMatrix.setTranslate(originX, originY);
-                        startMatrix
-                                .postScale(resizeRatio * ENLARGE_RATIO, resizeRatio * ENLARGE_RATIO, originX, originY);
+                        startMatrix.postScale(resizeRatio * ENLARGE_RATIO,
+                                resizeRatio * ENLARGE_RATIO, originX, originY);
 
                         Matrix finalMatrix = new Matrix();
                         finalMatrix.setTranslate(originX + moveX, originY + moveY);
-                        finalMatrix
-                                .postScale(resizeRatio * ENLARGE_RATIO * zoomInX, resizeRatio * ENLARGE_RATIO * zoomInY,
-                                        originX, originY);
+                        finalMatrix.postScale(resizeRatio * ENLARGE_RATIO * zoomInX,
+                                resizeRatio * ENLARGE_RATIO * zoomInY, originX, originY);
                         finalMatrix.postRotate(rotation);
 
-                        kenBurnsMovement = ValueAnimator.ofObject(evaluator, startMatrix, finalMatrix);
-                        kenBurnsMovement.addUpdateListener(
-                                (animator) -> productDrawable.setMatrix((Matrix) animator.getAnimatedValue()));
+                        kenBurnsMovement = ValueAnimator
+                                .ofObject(evaluator, startMatrix, finalMatrix);
+                        kenBurnsMovement.addUpdateListener((animator) -> productDrawable
+                                .setMatrix((Matrix)animator.getAnimatedValue()));
                         kenBurnsMovement.setDuration(14000);
                         kenBurnsMovement.setRepeatMode(ValueAnimator.REVERSE);
                         kenBurnsMovement.setRepeatCount(ValueAnimator.INFINITE);
                         kenBurnsMovement.start();
 
-                        kenBurnsAlpha = ObjectAnimator.ofInt(productDrawable, "alpha", 0, 0, 0, 255, 255, 255);
+                        kenBurnsAlpha = ObjectAnimator
+                                .ofInt(productDrawable, "alpha", 0, 0, 0, 255, 255, 255);
                         kenBurnsAlpha.setDuration(kenBurnsMovement.getDuration());
                         kenBurnsAlpha.setRepeatMode(ValueAnimator.REVERSE);
                         kenBurnsAlpha.setRepeatCount(ValueAnimator.INFINITE);

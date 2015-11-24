@@ -81,6 +81,19 @@
                         android:layout_gravity="center_vertical"
                         android:layout_marginLeft="4dp"/>
             </TableRow>
+            <TableRow>
+                <TextView
+                        android:text="Quantity"
+                        android:layout_column="0"
+                        android:layout_gravity="left|center_vertical"
+                        android:gravity="center"
+                        android:layout_marginRight="4dp"/>
+                <Spinner
+                        android:id="@+id/productQuantity"
+                        android:layout_column="1"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginLeft="4dp"/>
+            </TableRow>
         </TableLayout>
         <Button
                 style="@style/RoboButton"

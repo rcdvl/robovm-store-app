@@ -1,111 +1,141 @@
 <?xml version="1.0" encoding="utf-8"?>
-<org.robovm.store.views.SwipableListItem xmlns:android="http://schemas.android.com/apk/res/android"
+<org.robovm.store.views.SwipableListItem android:id="@+id/SwipeContainer"
+                                         xmlns:android="http://schemas.android.com/apk/res/android"
                                          android:layout_width="match_parent"
-                                         android:layout_height="wrap_content"
-                                         android:id="@+id/SwipeContainer">
+                                         android:layout_height="wrap_content">
+
     <LinearLayout
-            android:orientation="horizontal"
-            android:minWidth="25px"
-            android:minHeight="25px"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="?android:attr/colorBackground"
-            android:id="@+id/swipeContent">
+        android:id="@+id/swipeContent"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="?android:attr/colorBackground"
+        android:minHeight="25px"
+        android:minWidth="25px"
+        android:orientation="horizontal">
+
         <ImageView
-                android:src="@android:drawable/ic_menu_gallery"
-                android:layout_width="72dp"
-                android:layout_height="72dp"
-                android:id="@+id/productImage"
-                android:scaleType="centerCrop"
-                android:layout_marginBottom="4dp"
-                android:layout_marginTop="4dp"/>
+            android:id="@+id/productImage"
+            android:layout_width="72dp"
+            android:layout_height="72dp"
+            android:layout_marginBottom="4dp"
+            android:layout_marginTop="4dp"
+            android:scaleType="centerCrop"
+            android:src="@android:drawable/ic_menu_gallery"/>
+
         <LinearLayout
-                android:orientation="vertical"
-                android:minWidth="25px"
-                android:minHeight="25px"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/linearLayout2"
-                android:layout_gravity="center"
-                android:layout_weight="1"
-                android:layout_marginRight="8dp"
-                android:layout_marginLeft="8dp"
-                android:layout_marginTop="4dp"
-                android:layout_marginBottom="4dp">
+            android:id="@+id/linearLayout2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginBottom="4dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
+            android:layout_marginTop="4dp"
+            android:layout_weight="1"
+            android:minHeight="25px"
+            android:minWidth="25px"
+            android:orientation="vertical">
+
             <LinearLayout
-                    android:orientation="horizontal"
-                    android:minWidth="25px"
-                    android:minHeight="25px"
-                    android:layout_width="match_parent"
+                android:id="@+id/linearLayout3"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:minHeight="25px"
+                android:minWidth="25px"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/productTitle"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:id="@+id/linearLayout3">
+                    android:layout_gravity="bottom"
+                    android:layout_weight="1"
+                    android:text="Men's Java t-shirt"
+                    android:textColor="#272727"
+                    android:textSize="18sp"/>
+
                 <TextView
-                        android:text="Men's Java t-shirt"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:id="@+id/productTitle"
-                        android:layout_weight="1"
-                        android:layout_gravity="bottom"
-                        android:textSize="18sp"
-                        android:textColor="#272727"/>
-                <TextView
-                        android:text="Free"
-                        android:id="@+id/productPrice"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textColor="#09a8d6"
-                        android:textSize="12sp"
-                        android:layout_gravity="bottom"
-                        android:textAllCaps="true"/>
+                    android:id="@+id/productPrice"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="bottom"
+                    android:text="Free"
+                    android:textAllCaps="true"
+                    android:textColor="#09a8d6"
+                    android:textSize="12sp"/>
             </LinearLayout>
+
             <TextView
-                    android:text="Orangutan (Large)"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/productSize"
-                    android:textSize="11sp"
-                    android:textColor="#8c8c8c"/>
-            <TextView
-                    android:text="Navy"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                android:id="@+id/productSize"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Orangutan (Large)"
+                android:textColor="#8c8c8c"
+                android:textSize="11sp"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:minHeight="25px"
+                android:minWidth="25px"
+                android:orientation="horizontal">
+
+                <TextView
                     android:id="@+id/productColor"
-                    android:textSize="11sp"
-                    android:textColor="#8c8c8c"/>
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Navy"
+                    android:textColor="#8c8c8c"
+                    android:textSize="11sp"/>
+
+                <TextView
+                    android:id="@+id/productQuantity"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="bottom"
+                    android:text="x1"
+                    android:textColor="@color/robo_dark_blue"
+                    android:textSize="12sp"/>
+            </LinearLayout>
         </LinearLayout>
     </LinearLayout>
+
     <LinearLayout
-            android:orientation="horizontal"
-            android:minWidth="25px"
-            android:minHeight="25px"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:id="@+id/swipeAfter"
-            android:visibility="invisible">
+        android:id="@+id/swipeAfter"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:minHeight="25px"
+        android:minWidth="25px"
+        android:orientation="horizontal"
+        android:visibility="invisible">
+
         <TextView
-                android:text="Item removed"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:id="@+id/textView1"
-                android:textSize="20sp"
-                android:gravity="center"
-                android:layout_weight="1"/>
+            android:id="@+id/textView1"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="Item removed"
+            android:textSize="20sp"/>
+
         <View
-                android:layout_width="1dp"
-                android:layout_height="match_parent"
-                android:id="@+id/view1"
-                android:background="#aaaaaa"
-                android:layout_marginTop="8dp"
-                android:layout_marginBottom="8dp"/>
+            android:id="@+id/view1"
+            android:layout_width="1dp"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="8dp"
+            android:layout_marginTop="8dp"
+            android:background="#aaaaaa"/>
+
         <Button
-                android:text="Cancel"
-                android:id="@+id/button1"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:background="@null"
-                android:layout_gravity="center"
-                android:textAllCaps="true"
-                android:paddingLeft="16dp"
-                android:paddingRight="16dp"/>
+            android:id="@+id/button1"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:background="@null"
+            android:paddingLeft="16dp"
+            android:paddingRight="16dp"
+            android:text="Cancel"
+            android:textAllCaps="true"/>
     </LinearLayout>
 </org.robovm.store.views.SwipableListItem>

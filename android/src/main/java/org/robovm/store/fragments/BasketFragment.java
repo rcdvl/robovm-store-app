@@ -16,6 +16,14 @@
 
 package org.robovm.store.fragments;
 
+import org.robovm.store.R;
+import org.robovm.store.api.RoboVMWebService;
+import org.robovm.store.model.Basket;
+import org.robovm.store.model.Order;
+import org.robovm.store.util.Images;
+import org.robovm.store.views.SwipableListItem;
+import org.robovm.store.views.ViewSwipeTouchListener;
+
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.ListFragment;
@@ -27,14 +35,6 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
-
-import org.robovm.store.R;
-import org.robovm.store.api.RoboVMWebService;
-import org.robovm.store.model.Basket;
-import org.robovm.store.model.Order;
-import org.robovm.store.util.Images;
-import org.robovm.store.views.SwipableListItem;
-import org.robovm.store.views.ViewSwipeTouchListener;
 
 public class BasketFragment extends ListFragment {
     private Basket basket;
@@ -56,10 +56,11 @@ public class BasketFragment extends ListFragment {
     }
 
     @Override
-    public android.view.View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public android.view.View onCreateView(LayoutInflater inflater, ViewGroup container,
+            Bundle savedInstanceState) {
         View shoppingCartView = inflater.inflate(R.layout.basket, container, false);
 
-        checkoutButton = (Button) shoppingCartView.findViewById(R.id.checkoutBtn);
+        checkoutButton = (Button)shoppingCartView.findViewById(R.id.checkoutBtn);
         checkoutButton.setOnClickListener((b) -> {
             if (checkoutListener != null) {
                 checkoutListener.run();
@@ -81,8 +82,8 @@ public class BasketFragment extends ListFragment {
             checkoutButton.setVisibility(View.INVISIBLE);
         }
 
-        basket.addOnBasketChangeListener(
-                () -> checkoutButton.setVisibility(basket.size() > 0 ? View.VISIBLE : View.INVISIBLE));
+        basket.addOnBasketChangeListener(() -> checkoutButton
+                .setVisibility(basket.size() > 0 ? View.VISIBLE : View.INVISIBLE));
     }
 
     public static class GroceryListAdapter extends BaseAdapter {
@@ -116,7 +117,7 @@ public class BasketFragment extends ListFragment {
             View view = convertView; // re-use an existing view, if one is available
             if (view == null) {
                 view = LayoutInflater.from(context).inflate(R.layout.basket_item, parent, false);
-                ViewSwipeTouchListener swipper = ((SwipableListItem) view).getSwipeListener();
+                ViewSwipeTouchListener swipper = ((SwipableListItem)view).getSwipeListener();
                 final View finalView = view;
                 swipper.addEventListener(new ViewSwipeTouchListener.EventListener() {
                     @Override
@@ -135,7 +136,7 @@ public class BasketFragment extends ListFragment {
                         if (finalView.getParent() == null) {
                             return;
                         }
-                        int p = ((ListView) parent).getPositionForView(finalView);
+                        int p = ((ListView)parent).getPositionForView(finalView);
                         Basket basket = RoboVMWebService.getInstance().getBasket();
                         basket.remove(p);
                         notifyDataSetChanged();
@@ -143,12 +144,14 @@ public class BasketFragment extends ListFragment {
                 });
             }
 
-            ((TextView) view.findViewById(R.id.productTitle)).setText(order.getProduct().getName());
-            ((TextView) view.findViewById(R.id.productPrice)).setText(order.getProduct().getPriceDescription());
-            ((TextView) view.findViewById(R.id.productColor)).setText(order.getColor().getName());
-            ((TextView) view.findViewById(R.id.productSize)).setText(order.getSize().getName());
+            ((TextView)view.findViewById(R.id.productTitle)).setText(order.getProduct().getName());
+            ((TextView)view.findViewById(R.id.productPrice))
+                    .setText(order.getProduct().getPriceDescription());
+            ((TextView)view.findViewById(R.id.productColor)).setText(order.getColor().getName());
+            ((TextView)view.findViewById(R.id.productSize)).setText(order.getSize().getName());
+            ((TextView)view.findViewById(R.id.productQuantity)).setText("x" + order.getQuantity());
 
-            ImageView orderImage = (ImageView) view.findViewById(R.id.productImage);
+            ImageView orderImage = (ImageView)view.findViewById(R.id.productImage);
             orderImage.setImageResource(R.drawable.product_image);
 
             Images.setImageFromUrlAsync(orderImage, order.getColor().getImageUrls().get(0));

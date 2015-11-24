@@ -19,6 +19,7 @@ public class Order {
     private transient Product product;
     private transient ProductSize productSize;
     private transient ProductColor productColor;
+    private transient int productQuantity;
 
     String id;
     String size;
@@ -28,6 +29,7 @@ public class Order {
         setProduct(order.getProduct());
         setSize(order.getSize());
         setColor(order.getColor());
+        setQuantity(order.getQuantity());
     }
 
     public Order(Product product) {
@@ -59,6 +61,10 @@ public class Order {
         return productSize;
     }
 
+    public int getQuantity() {
+        return productQuantity;
+    }
+
     public void setSize(ProductSize size) {
         this.productSize = size;
         this.size = size.getId();
@@ -67,6 +73,10 @@ public class Order {
     public void setColor(ProductColor color) {
         this.productColor = color;
         this.color = color.getName();
+    }
+
+    public void setQuantity(int quantity) {
+        this.productQuantity = quantity;
     }
 
     @Override
